@@ -95,7 +95,7 @@ Usage of rclip:
   -send_port uint
         specify the port for sender on reflector (default 8890)
 ```
-note: 
+
 
 ## license
 MIT; https://opensource.org/licenses/MIT
