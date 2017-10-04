@@ -14,7 +14,7 @@ type RclipRcv struct {
 	conn *tls.Conn
 }
 
-func NewRclipRcv(ca_cert_path string, cert_path string, key_path string, svr_ip string, svr_port int) (*RclipRcv, error) {
+func NewRclipRcv(ca_cert_path string, cert_path string, key_path string, svr_ip string, svr_port int, svn_check bool) (*RclipRcv, error) {
 	new_rcv := new(RclipRcv)
 	cer, err := tls.LoadX509KeyPair(cert_path, key_path)
 	if err != nil {
@@ -29,8 +29,12 @@ func NewRclipRcv(ca_cert_path string, cert_path string, key_path string, svr_ip 
 	if ok != true {
 		return nil, common.MakeErrviaStr("error parsing root CA cert file")
 	}
-
-	cfg := &tls.Config{Certificates: []tls.Certificate{cer}, RootCAs: roots, InsecureSkipVerify: false, ServerName: "1.1.1.1", MinVersion: tls.VersionTLS12}
+	var cfg *tls.Config
+	if svn_check == false {
+		cfg = &tls.Config{Certificates: []tls.Certificate{cer}, RootCAs: roots, InsecureSkipVerify: false, ServerName: "1.1.1.1", MinVersion: tls.VersionTLS12}
+	} else {
+		cfg = &tls.Config{Certificates: []tls.Certificate{cer}, RootCAs: roots, InsecureSkipVerify: false, MinVersion: tls.VersionTLS12}
+	}
 	new_rcv.conn, err = tls.Dial("tcp", svr_ip+":"+strconv.Itoa(svr_port), cfg)
 	if err != nil {
 		return nil, common.MakeErr(err)

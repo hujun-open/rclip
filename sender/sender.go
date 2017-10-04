@@ -17,7 +17,7 @@ type RclipSender struct {
 	conn *tls.Conn
 }
 
-func NewRclipSender(ca_cert_path string, cert_path string, key_path string, svr_ip string, svr_port int) (*RclipSender, error) {
+func NewRclipSender(ca_cert_path string, cert_path string, key_path string, svr_ip string, svr_port int, san_check bool) (*RclipSender, error) {
 	new_sender := new(RclipSender)
 	cer, err := tls.LoadX509KeyPair(cert_path, key_path)
 	if err != nil {
@@ -32,7 +32,12 @@ func NewRclipSender(ca_cert_path string, cert_path string, key_path string, svr_
 	if ok != true {
 		return nil, common.MakeErrviaStr("error parsing root CA cert file")
 	}
-	cfg := &tls.Config{Certificates: []tls.Certificate{cer}, RootCAs: roots, InsecureSkipVerify: false, ServerName: "1.1.1.1", MinVersion: tls.VersionTLS12}
+	var cfg *tls.Config
+	if san_check == false {
+		cfg = &tls.Config{Certificates: []tls.Certificate{cer}, RootCAs: roots, InsecureSkipVerify: false, ServerName: "1.1.1.1", MinVersion: tls.VersionTLS12}
+	} else {
+		cfg = &tls.Config{Certificates: []tls.Certificate{cer}, RootCAs: roots, InsecureSkipVerify: false, ServerName: svr_ip, MinVersion: tls.VersionTLS12}
+	}
 	tcp_conn, err := net.Dial("tcp", svr_ip+":"+strconv.Itoa(svr_port))
 	if err != nil {
 		return nil, common.MakeErr(err)
