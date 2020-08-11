@@ -49,6 +49,10 @@ func (clnt *RclipRcv) ReadandSend(reader io.Reader) {
 		common.ErrLog.Printf("error reading, %v", err)
 		return
 	}
+	if len(msg) == 0 {
+		common.InfoLog.Printf("ignoring zero length input")
+		return
+	}
 	_, err = clnt.conn.Write(msg)
 	if err != nil {
 		common.ErrLog.Printf("error sending, %v", err)

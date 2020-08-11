@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	var ver = 1.1
+	var ver = 1.2
 	version_str := fmt.Sprintf("remote clipboard, version %v", ver)
 	fmt.Println(version_str)
 	role := flag.String("role", "rcv", "specify the role, rcv/refl/sender") //refl will accept text from sender, and forward it to rcv

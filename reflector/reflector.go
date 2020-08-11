@@ -123,6 +123,10 @@ func (refl *Reflector) handleRcvConnection(conn net.Conn) {
 		return
 	}
 	common.InfoLog.Printf("rcvd %v bytes msg from %v", len(msg), conn.RemoteAddr())
+	if len(msg) == 0 {
+		//ignoring zero length msg
+		return
+	}
 	encaped_msg := common.EncapMsg(msg)
 	wrote_len, err := refl.send_conn.Write(encaped_msg)
 	if err != nil {
