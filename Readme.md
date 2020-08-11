@@ -1,4 +1,4 @@
-# rclip ver1.1
+# rclip
 rclip is a tool copy text from remote host to local system cliboard; 
 
 it is specifically designed for copy seletected text in tmux copy-mode on a remote host to local system cliboard over network; which is a big pain point of using tmux;
