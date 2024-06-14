@@ -3,6 +3,8 @@ rclip is a tool copy text from remote host to local system cliboard;
 
 it is specifically designed for copy seletected text in tmux copy-mode on a remote host to local system cliboard over network; which is a big pain point of using tmux;
 
+**Note: You don't need rclip if your terminal supports [OSC 52](https://github.com/tmux/tmux/wiki/Clipboard#how-it-works)**
+
 ## how does it work?
 first run rclip as reflector role on remote host, which is processing listening on two ports over TLS:
 * rcv_port: default 8891
